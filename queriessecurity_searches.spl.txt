@@ -1,0 +1,23 @@
+
+# SPLUNK SECURITY QUERIES - WINDOWS THREAT MONITORING LAB
+
+# 1. Détection des échecs de connexion (Failed Logins - Brute Force Candidate)
+index=* host="DESKTOP-F5D96A1" EventCode=4625
+| stats count by TargetUserName, LogonType, WorkstationName, _time
+| sort - count
+
+# 2. Détection des connexions réussies (Successful Logins)
+index=* host="DESKTOP-F5D96A1" EventCode=4624
+| table _time, TargetUserName, LogonType, IpAddress
+
+# 3. Détection de création de nouveaux comptes utilisateurs (Persistence Threat)
+index=* host="DESKTOP-F5D96A1" EventCode=4720
+| table _time, TargetUserName, SubjectUserName
+
+# 4. Détection de l'effacement des Logs de Sécurité (Log Tampering)
+index=* host="DESKTOP-F5D96A1" EventCode=1102
+| stats count by SecurityID, AccountName, _time
+
+# 5. Top 5 des événements de sécurité les plus fréquents
+index=* host="DESKTOP-F5D96A1" sourcetype="WinEventLog:Security"
+| top limit=5 EventCode

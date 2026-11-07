@@ -1,0 +1,10 @@
+[WinEventLog://Security]
+disabled = 0
+current_only = 0
+checkpointInterval = 5
+
+[WinEventLog://System]
+disabled = 0
+
+[WinEventLog://Application]
+disabled = 0
